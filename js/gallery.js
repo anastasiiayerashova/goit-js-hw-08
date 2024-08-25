@@ -68,23 +68,68 @@ const images = [
 
 const ul = document.querySelector(".gallery");
 
-let htmlString = '';
+function destructuring() {
+    let htmlString = '';
+    for (const image of images) {
+        const { preview, original, description } = image;
+        htmlString += `<li class="gallery-item">
+        <a class="gallery-link" href="${original}">
+        <img
+        class="gallery-image"
+        src="${preview}"
+        data-source="${original}"
+        alt="${description}"
+        />
+      </a>
+      </li>
+      `;
+    }
+    ul.insertAdjacentHTML("beforeend", htmlString);
+};
 
-for (const image of images) {
-    htmlString += `<li class="gallery-item">
-  <a class="gallery-link" href="${image.original}">
-    <img
-      class="gallery-image"
-      src="${image.preview}"
-      data-source="${image.original}"
-      alt="${image.description}"
-    />
-  </a>
-</li>
-`;
-}
+destructuring(images);
 
-ul.insertAdjacentHTML("beforeend", htmlString);
+ul.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (event.target.nodeName !== "IMG") {
+        return;
+    }
+    const instance = basicLightbox.create(`
+	<img src="${event.target.dataset.source}" width="1112" height="640" style="border-radius: 8px;"/>
+`);
+ 
+    instance.show();
+
+    document.addEventListener("keydown", function keydown(event) {
+    if (event.key === "Escape") {
+        instance.close();
+        }
+        document.removeEventListener("keydown", keydown);
+});
+});
+
+
+
+
+
+// const ul = document.querySelector(".gallery");
+// let htmlString = '';
+
+// for (const image of images) {
+//     htmlString += `<li class="gallery-item">
+//   <a class="gallery-link" href="${image.original}">
+//     <img
+//       class="gallery-image"
+//       src="${image.preview}"
+//       data-source="${image.original}"
+//       alt="${image.description}"
+//     />
+//   </a>
+// </li>
+// `;
+// }
+
+// ul.insertAdjacentHTML("beforeend", htmlString);
 
 // const links = document.querySelectorAll("a")
 // for (const link of links) {
@@ -94,19 +139,19 @@ ul.insertAdjacentHTML("beforeend", htmlString);
 // })
 // }
 
-ul.addEventListener("click", (event) => {
-    event.preventDefault();
-    if (event.target.nodeName !== "IMG") {
-        return;
-    }
-    const instance = basicLightbox.create(`
-	<img src="${event.target.dataset.source}" width="1112" height="640" />
-`);
-    console.log(instance.element())
-    instance.show();
-});
+// ul.addEventListener("click", (event) => {
+//     event.preventDefault();
+//     if (event.target.nodeName !== "IMG") {
+//         return;
+//     }
+//     const instance = basicLightbox.create(`
+// 	<img src="${event.target.dataset.source}" width="1112" height="640" />
+// `);
+//     console.log(instance.element())
+//     instance.show();
+// });
 
-ul.addEventListener("blur", (event) => {
-        instance.close();
-});
+// ul.addEventListener("blur", (event) => {
+//         instance.close();
+// });
 
