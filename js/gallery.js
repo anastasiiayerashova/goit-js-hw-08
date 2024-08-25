@@ -148,8 +148,3 @@ ul.addEventListener("click", (event) => {
 //     console.log(instance.element())
 //     instance.show();
 // });
-
-// ul.addEventListener("blur", (event) => {
-//         instance.close();
-// });
-
